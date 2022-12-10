@@ -2,3 +2,4 @@ streamlit
 plotly
 pandas
 altair
+sklearn
