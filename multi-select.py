@@ -20,13 +20,9 @@ chart = alt.Chart(df).mark_circle().encode(
     color="y"
 )
 
-if selection_tool == "Brush":
+if selection_tool != "None":
     chart = chart.add_selection(
-        alt.selection_brush(encodings=["x", "y"])
-    )
-elif selection_tool == "Lasso":
-    chart = chart.add_selection(
-        alt.selection_lasso(encodings=["x", "y"])
+        alt.selection_interval(encodings=["x", "y"], bind="scales")
     )
 
 st.altair_chart(chart, use_container_width=True)
