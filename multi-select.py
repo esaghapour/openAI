@@ -1,24 +1,21 @@
 import streamlit as st
 import pandas as pd
-import altair as alt
+from sklearn.datasets import make_classification
 
-# Load the data into a Pandas DataFrame
-data = pd.read_csv("data.csv")
+# Create dummy data
+data = make_classification(n_samples=500, n_features=2, n_informative=2, n_redundant=0, random_state=4)
 
-# Create an Altair chart with the scatter plot
-chart = alt.Chart(data).mark_point().encode(
-    x="x",
-    y="y"
-)
+# Convert data to Pandas dataframe
+df = pd.DataFrame(data[0], columns=["x1", "x2"])
+df["y"] = data[1]
 
-# Add the lasso selection tool to the chart
-chart = chart.add_selection(
-    alt.selection_lasso()
-)
+# Add lasso selection tool
+lasso = st.selectbox("Choose Lasso selection tool:", ["None", "Brush", "Lasso"])
 
-# Display the chart in the Streamlit app
-st.altair_chart(chart, use_container_width=True)
-
-# Show a table of the data for the selected points
-selected_data = alt.selection_data(data)
-st.dataframe(selected_data)
+# Plot scatter plot with lasso selection
+if lasso == "Brush":
+    st.brush_selector("Select points on the scatter plot", df, ["x1", "x2"], "y")
+elif lasso == "Lasso":
+    st.lasso_selector("Select points on the scatter plot", df, ["x1", "x2"], "y")
+else:
+    st.scatter_chart(df, "x1", "x2", "y")
