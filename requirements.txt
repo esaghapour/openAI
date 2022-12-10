@@ -2,4 +2,4 @@ streamlit
 plotly
 pandas
 altair
-sklearn
+scikit-learn
