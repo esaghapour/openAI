@@ -1,21 +1,23 @@
+import random
+import plotly.express as px  
 import streamlit as st
-import pandas as pd
-from sklearn.datasets import make_classification
+import streamlit.components.v1 as components
 
-# Create dummy data
-data = make_classification(n_samples=500, n_features=2, n_informative=2, n_redundant=0, random_state=4)
+_component_func = components.declare_component(
+    "my_component",
+    url="http://localhost:3001",
+)
 
-# Convert data to Pandas dataframe
-df = pd.DataFrame(data[0], columns=["x1", "x2"])
-df["y"] = data[1]
+def my_component(fig):
+    points = _component_func(spec=fig.to_json(), default=[], key="key")
+    return points
 
-# Add lasso selection tool
-lasso = st.selectbox("Choose Lasso selection tool:", ["None", "Brush", "Lasso"])
+@st.cache
+def random_data():
+    return random.sample(range(100), 50), random.sample(range(100), 50)
 
-# Plot scatter plot with lasso selection
-if lasso == "Brush":
-    st.brush_selector("Select points on the scatter plot", df, ["x1", "x2"], "y")
-elif lasso == "Lasso":
-    st.lasso_selector("Select points on the scatter plot", df, ["x1", "x2"], "y")
-else:
-    st.scatter_chart(df, "x1", "x2", "y")
+st.subheader("My Component")
+x, y = random_data()
+fig = px.scatter(x=x, y=y, title="My fancy plot")
+v = my_component(fig)
+st.write(v)
