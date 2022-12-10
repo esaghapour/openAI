@@ -1,23 +1,32 @@
-import random
-import plotly.express as px  
 import streamlit as st
-import streamlit.components.v1 as components
+import pandas as pd
+import altair as alt
+from sklearn.datasets import make_classification
 
-_component_func = components.declare_component(
-    "my_component",
-    url="http://localhost:3001",
+# Create dummy data
+data = make_classification(n_samples=500, n_features=2, n_informative=2, n_redundant=0, random_state=4)
+
+# Convert data to Pandas dataframe
+df = pd.DataFrame(data[0], columns=["x1", "x2"])
+df["y"] = data[1]
+
+# Add selection tool dropdown menu
+selection_tool = st.selectbox("Choose selection tool:", ["None", "Brush", "Lasso"])
+
+# Create scatter plot with selected selection tool
+chart = alt.Chart(df).mark_circle().encode(
+    x="x1",
+    y="x2",
+    color="y"
 )
 
-def my_component(fig):
-    points = _component_func(spec=fig.to_json(), default=[], key="key")
-    return points
+if selection_tool == "Brush":
+    chart = chart.add_selection(
+        alt.selection_brush(encodings=["x", "y"])
+    )
+elif selection_tool == "Lasso":
+    chart = chart.add_selection(
+        alt.selection_lasso(encodings=["x", "y"])
+    )
 
-@st.cache
-def random_data():
-    return random.sample(range(100), 50), random.sample(range(100), 50)
-
-st.subheader("My Component")
-x, y = random_data()
-fig = px.scatter(x=x, y=y, title="My fancy plot")
-v = my_component(fig)
-st.write(v)
+st.altair_chart(chart, use_container_width=True)
