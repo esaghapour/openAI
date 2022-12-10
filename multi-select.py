@@ -1,24 +1,24 @@
 import streamlit as st
-import plotly.express as px
+import pandas as pd
+import altair as alt
 
-# load data
-data = px.data.gapminder()
+# Load the data into a Pandas DataFrame
+data = pd.read_csv("data.csv")
 
-# create scatter plot
-fig = px.scatter(data, x="gdpPercap", y="lifeExp")
-
-# add lasso select tool
-fig.update_layout(
-    {"dragmode": "select", "selectdirection": "h"},
-    hovermode="closest",
-    showlegend=False,
+# Create an Altair chart with the scatter plot
+chart = alt.Chart(data).mark_point().encode(
+    x="x",
+    y="y"
 )
 
-# show plot in streamlit
-st.plotly_chart(fig)
+# Add the lasso selection tool to the chart
+chart = chart.add_selection(
+    alt.selection_lasso()
+)
 
-# get selected data
-selected_data = fig.data[0].selectedpoints
+# Display the chart in the Streamlit app
+st.altair_chart(chart, use_container_width=True)
 
-# show table of selected data
-st.write(data.iloc[selected_data.point_inds])
+# Show a table of the data for the selected points
+selected_data = alt.selection_data(data)
+st.dataframe(selected_data)
