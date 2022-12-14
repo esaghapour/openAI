@@ -1,26 +1,20 @@
 import streamlit as st
 import openai
+
+# Set the API key for the openai library
+openai.api_key = "k-tkRLJ6cLpwAzELsbdvtDT3BlbkFJHNwDiBFVxJz5qPGH1v4V"
+
 # Get the text input from the user
-text ='write a sample code about scater plot in python using plotly package'
+text = st.text_input("Enter some text:")
 
-# Display the text in the app
-st.write("You entered:", text)
-
-
-
-# set the API key
-openai.api_key = "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"
-
-
-# specify the prompt to use
-
+# Use the chatGPT model to generate a response to the entered text
 response = openai.Completion.create(
-  model="text-davinci-003",
-  prompt=text,
-  temperature=0.7,
-  max_tokens=256,
-  top_p=1,
-  frequency_penalty=0,
-  presence_penalty=0
+    engine="text-davinci-002",
+    prompt=text,
+    max_tokens=1024,
+    n=1,
+    temperature=0.5,
 )
-exec(response["choices"][0]["text"])
+
+# Display the response in the app
+st.write("The chatGPT model responded with:", response["choices"][0]["text"])
