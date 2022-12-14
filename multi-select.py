@@ -9,7 +9,7 @@ st.write("You entered:", text)
 
 
 # set the API key
-openai.api_key = "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"
+openai.api_key = "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"
 
 
 # specify the prompt to use
