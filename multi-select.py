@@ -1,28 +1,27 @@
 import streamlit as st
-import pandas as pd
-import altair as alt
-from sklearn.datasets import make_classification
+import openai
+# Get the text input from the user
+text = st.text_input("Enter some text:")
 
-# Create dummy data
-data = make_classification(n_samples=500, n_features=2, n_informative=2, n_redundant=0, random_state=4)
+# Display the text in the app
+st.write("You entered:", text)
 
-# Convert data to Pandas dataframe
-df = pd.DataFrame(data[0], columns=["x1", "x2"])
-df["y"] = data[1]
 
-# Add selection tool dropdown menu
-selection_tool = st.selectbox("Choose selection tool:", ["None", "Brush", "Lasso"])
 
-# Create scatter plot with selected selection tool
-chart = alt.Chart(df).mark_circle().encode(
-    x="x1",
-    y="x2",
-    color="y"
+# set the API key
+openai.api_key = "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"
+
+# specify the model to use (in this case, the "text-davinci-002" model)
+model = "code-davinci-002"
+
+# specify the prompt to use
+
+response = openai.Completion.create(
+  model="text-davinci-003",
+  prompt=text,
+  temperature=0.7,
+  max_tokens=256,
+  top_p=1,
+  frequency_penalty=0,
+  presence_penalty=0
 )
-
-if selection_tool != "None":
-    chart = chart.add_selection(
-        alt.selection_interval(encodings=["x", "y"], bind="scales")
-    )
-
-st.altair_chart(chart, use_container_width=True)
