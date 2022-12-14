@@ -1,7 +1,7 @@
 import streamlit as st
 import openai
 # Get the text input from the user
-text = st.text_input("Enter some text:")
+text ='write a sample code about scater plot in python using plotly package'
 
 # Display the text in the app
 st.write("You entered:", text)
