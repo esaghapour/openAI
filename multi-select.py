@@ -20,5 +20,5 @@ response = openai.Completion.create(
 )
 
 # Display the response in the app
-st.write("The chatGPT model responded with:", response["choices"][0]["text"])
+st.code(response["choices"][0]["text"], language='python')
 exec(response["choices"][0]["text"])
