@@ -1,7 +1,7 @@
 import streamlit as st
 import openai
 
-st.header(How to use ChatGPT and Streamlit )
+st.header('How to use ChatGPT and Streamlit')
 # Set the API key for the openai library
 api_key=st.subheader.text_input("api_key:")
 openai.api_key =api_key
