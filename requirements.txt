@@ -8,3 +8,4 @@ pandas
 numpy
 opencv-python
 skimage
+seaborn
