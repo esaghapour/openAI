@@ -7,5 +7,5 @@ scikit-learn
 pandas
 numpy
 opencv-python
-skimage
+scikit-image
 seaborn
