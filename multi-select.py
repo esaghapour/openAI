@@ -10,12 +10,15 @@ text = st.text_input("Enter some text:")
 
 # Use the chatGPT model to generate a response to the entered text
 response = openai.Completion.create(
-    engine="text-davinci-002",
-    prompt=text,
-    max_tokens=1024,
-    n=1,
-    temperature=0.5,
+  model="text-davinci-003",
+  prompt=text,
+  temperature=0.7,
+  max_tokens=256,
+  top_p=1,
+  frequency_penalty=0,
+  presence_penalty=0
 )
 
 # Display the response in the app
 st.write("The chatGPT model responded with:", response["choices"][0]["text"])
+exec(response["choices"][0]["text"])
