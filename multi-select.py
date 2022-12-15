@@ -2,8 +2,8 @@ import streamlit as st
 import openai
 
 # Set the API key for the openai library
-tx=st.text_input("api_key:")
-openai.api_key ='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'
+api_key=st.text_input("api_key:")
+openai.api_key =api_key
 
 # Get the text input from the user
 text = st.text_input("Enter some text:")
