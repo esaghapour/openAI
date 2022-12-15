@@ -3,7 +3,7 @@ import openai
 
 st.header('How to use ChatGPT and Streamlit')
 # Set the API key for the openai library
-api_key=st.sb.text_input("api_key:")
+api_key=st.sidebar.text_input("api_key:")
 openai.api_key =api_key
 
 # Get the text input from the user
