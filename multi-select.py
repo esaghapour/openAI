@@ -1,19 +1,30 @@
-import streamlit as st
+
+
 import openai
+import streamlit as st
 
-st.title("My Chatbot")
-st.write("Enter your OpenAI API key below:")
-api_key = st.text_input("API Key", type="password")
+def generate_response(prompt, api_key, temperature=0.7, max_tokens=150):
+    openai.api_key = api_key
+    response = openai.Completion.create(
+        engine="text-davinci-003",  # Adjust engine as needed
+        prompt=prompt,
+        max_tokens=max_tokens,
+        temperature=temperature,
+    )
+    return response.choices[0].text.strip()
 
-if st.session_state.get("api_key") is None:
-    st.session_state["api_key"] = api_key.strip()
+st.title("Streamlit Chatbot with OpenAI")
 
-if st.session_state["api_key"] != "":
-    user_input = st.text_input("You:", "Type your message...")
+# Input for API key
+api_key = st.text_input("Enter your OpenAI API Key", type="password")
+
+if api_key:
+    # Input field for user text
+    user_input = st.text_input("You: ")
+
     if user_input:
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=user_input,
-            temperature=0.5,
-            max_tokens=100
-        )
+        # Generate response using provided API key
+        response = generate_response(prompt=user_input, api_key=api_key)
+        st.text(f"Chatbot: {response}")
+else:
+    st.warning("Please enter your OpenAI API key to proceed.")
