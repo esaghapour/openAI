@@ -1,5 +1,5 @@
 streamlit
-openai==0.28
+openai 
 plotly
 pandas
 matplotlib
