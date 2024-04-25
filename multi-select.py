@@ -21,3 +21,13 @@ def get_response(query, api_key):
         "temperature": 0.5,
     }
     response = requests.post(url, headers=headers, json=payload)
+def main():
+    if st.session_state.get("api_key") is None:
+        st.session_state["api_key"] = api_key.strip()
+
+    if st.session_state["api_key"] != "":
+        user_input = st.text_input("You:", "Type your message...")
+        if user_input:
+            response = get_response(user_input, st.session_state["api_key"])
+            bot_response = response.choices[0].text.strip()
+            st.markdown(f"Bot: {bot_response}")
