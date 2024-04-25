@@ -1,41 +1,32 @@
 import streamlit as st
-from openai import OpenAI
+import requests
 
-# Initialize OpenAI client
-client = OpenAI()
+# Function to make API requests
+def fetch_data(query, api_key):
+    url = "API_ENDPOINT_HERE"
+    headers = {"Authorization": f"Bearer {api_key}"}
+    params = {"query": query}
+    response = requests.get(url, headers=headers, params=params)
+    data = response.json()
+    return data
 
-# Function to create completions using OpenAI API
-def create_completion(api_key, model, messages):
-    client.api_key = api_key
-    completion = client.chat.completions.create(model=model, messages=messages)
-    return completion.choices[0].message
-
-# Streamlit app
+# Streamlit UI
 def main():
-    st.header('OpenAI ChatGPT Streamlit App')
-
-    # Get API key from user input
-    api_key = st.sidebar.text_input("Enter your OpenAI API Key:", type="password")
-
-    # Example messages
-    messages = [
-        {"role": "system", "content": "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair."},
-        {"role": "user", "content": "Compose a poem that explains the concept of recursion in programming."}
-    ]
-
-    # Generate completion when button is clicked
-    if st.button("Generate Response"):
-        # Ensure API key is provided
-        if not api_key:
-            st.error("Please enter your OpenAI API key.")
+    st.title("OpenAPI Chatbot")
+    api_key = st.text_input("Enter your API key:")
+    query = st.text_input("Enter your query:")
+    if st.button("Submit"):
+        if api_key:
+            if query:
+                try:
+                    response = fetch_data(query, api_key)
+                    st.write("Bot:", response['answer'])
+                except Exception as e:
+                    st.write("An error occurred:", e)
+            else:
+                st.write("Please enter a query.")
         else:
-            try:
-                # Generate completion using OpenAI API
-                completion = create_completion(api_key, "gpt-3.5-turbo", messages)
-                st.write("Response:")
-                st.write(completion)
-            except Exception as e:
-                st.error(f"An error occurred: {e}")
+            st.write("Please enter your API key.")
 
 if __name__ == "__main__":
     main()
