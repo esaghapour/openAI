@@ -5,7 +5,7 @@ import streamlit as st
 
 def generate_response(prompt, api_key, temperature=0.7, max_tokens=150):
     openai.api_key = api_key
-    response = openai.Completion.create(
+    response = openai.Completion.create(  # Replace with the appropriate method from 1.0.0 API
         engine="text-davinci-003",  # Adjust engine as needed
         prompt=prompt,
         max_tokens=max_tokens,
