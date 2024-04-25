@@ -21,7 +21,7 @@ def generate_response(prompt, api_key, temperature=0.7, max_tokens=150):
 
     try:
         response = openai.Completion.create(  # Replace based on 1.0.0 API migration
-            engine="text-davinci-003",  # Adjust engine as needed
+            engine="gpt-3.5-turbo-instruct",  # Adjust engine as needed
             prompt=prompt,
             max_tokens=max_tokens,
             temperature=temperature,
